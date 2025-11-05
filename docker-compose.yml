@@ -1,0 +1,17 @@
+services:
+  web:
+    image: personal-website:latest
+    environment:
+      - PORT=8080
+    expose:
+      - "8080"        # visible to other containers, not published to host
+    restart: unless-stopped
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --no-autoupdate run --token ${TUNNEL_TOKEN}
+    # cloudflared will reach "web:8080" over the default Docker network
+    depends_on:
+      - web
+    restart: unless-stopped
+
