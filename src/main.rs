@@ -1,5 +1,5 @@
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
-use actix_files::NamedFile;
+use actix_files::Files;
 
 #[post("/echo")]
 async fn echo(req_body: String) -> impl Responder {
