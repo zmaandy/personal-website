@@ -3,7 +3,7 @@ use actix_files::NamedFile;
 use std::path::PathBuf;
 
 #[get("/")]
-async fn index() -> impl Responder {
+async fn index() -> Result<impl Responder> {
     Ok(NamedFile::open("static/index.html")?)
 }
 
