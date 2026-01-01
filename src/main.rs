@@ -1,9 +1,9 @@
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{get, post, web, App, Result, HttpResponse, HttpServer, Responder};
 use actix_files::NamedFile;
 use std::path::PathBuf;
 
 #[get("/")]
-async fn index() -> Result<impl Responder, E> {
+async fn index() -> Result<impl Responder> {
     Ok(NamedFile::open("static/index.html")?)
 }
 
