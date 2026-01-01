@@ -1,7 +1,10 @@
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+use actix_files::NamedFile;
+use std::path::PathBuf;
+
 #[get("/")]
-async fn hello() -> impl Responder {
-    HttpResponse::Ok().body("Thanks for dropping by! My website is in the early stages of construction, so there's nothing here yet. Check back later.")
+async fn index() -> impl Responder {
+    Ok(NamedFile::open("static/index.html")?)
 }
 
 #[post("/echo")]
@@ -17,12 +20,13 @@ async fn manual_hello() -> impl Responder {
 async fn main() -> std::io::Result<()> {   
   HttpServer::new(|| {
         App::new()
-            .service(hello)
+            .service(index)
             .service(echo)
+            .service(actix_files::Files::new("/static", "static").show_files_listing())
             .route("/hey", web::get().to( manual_hello))
         })
         .bind(("0.0.0.0", 8080))?
-        .run()   
+        .run()
         .await
 }
 
