@@ -3,7 +3,7 @@ use actix_files::NamedFile;
 use std::path::PathBuf;
 
 #[get("/")]
-async fn index() -> Result<impl Responder> {
+async fn index() -> Result<NamedFile> {
     Ok(NamedFile::open("static/index.html")?)
 }
 
@@ -22,7 +22,6 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .service(index)
             .service(echo)
-            .service(actix_files::Files::new("/static", "static").show_files_listing())
             .route("/hey", web::get().to( manual_hello))
         })
         .bind(("0.0.0.0", 8080))?
